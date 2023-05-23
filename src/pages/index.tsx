@@ -37,7 +37,7 @@ const items = [
   },
   {
     itemNumber: "78414",
-    itemDesc: "Birdhouse Gazebo Small",
+    itemDesc: "Birdhouse Gazebo Small Birdhouse Gazebo Small Birdhouse Gazebo Small",
     upc: "0759834560012",
     sku: "1005909526",
     locations: [
@@ -66,19 +66,57 @@ const items = [
     sku: "1005909526",
     locations: [],
   },
+  {
+    itemNumber: "78414",
+    itemDesc: "Birdhouse Gazebo Small",
+    upc: "0759834560012",
+    sku: "1005909526",
+    locations: [],
+  },
+  {
+    itemNumber: "78414",
+    itemDesc: "Birdhouse Gazebo Small",
+    upc: "0759834560012",
+    sku: "1005909526",
+    locations: [],
+  },
+  {
+    itemNumber: "78414",
+    itemDesc: "Birdhouse Gazebo Small",
+    upc: "0759834560012",
+    sku: "1005909526",
+    locations: [],
+  },
+  {
+    itemNumber: "78414",
+    itemDesc: "Birdhouse Gazebo Small",
+    upc: "0759834560012",
+    sku: "1005909526",
+    locations: [],
+  },
+  {
+    itemNumber: "78414",
+    itemDesc: "Birdhouse Gazebo Small",
+    upc: "0759834560012",
+    sku: "1005909526",
+    locations: [],
+  },
+  {
+    itemNumber: "78414",
+    itemDesc: "Birdhouse Gazebo Small",
+    upc: "0759834560012",
+    sku: "1005909526",
+    locations: [],
+  },
 ];
 
 export default function Home() {
   return (
-    <main
-      className={`flex flex-col min-h-screen ${inter.className}`}
-    >
+    <main className={`flex flex-col min-h-screen ${inter.className}`}>
       <Header />
       <div className="flex">
-      <Sidebar>
-        {Children}
-      </Sidebar>
-      <ItemContainer items={items} />
+        <Sidebar>{Children}</Sidebar>
+        <ItemContainer items={items} />
       </div>
     </main>
   );
