@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { PlusCircleIcon } from "@heroicons/react/20/solid";
 
 export default function CreateForm() {
   const CreateSchema = Yup.object().shape({
@@ -37,24 +38,53 @@ export default function CreateForm() {
     description: string;
   };
 
-  console.log("Form Errors on line 41 - CreateForm.tsx: ", errors);
+//   console.log("Form Errors on line 41 - CreateForm.tsx: ", errors);
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+    <div className="w-full flex border-2 rounded-sm shadow-lg p-6">
+      <form className="flex flex-col gap-4 text-sm w-full" onSubmit={handleSubmit(onSubmit)}>
+        <fieldset className="flex flex-col gap-4">
+          <legend className="flex items-center text-lg font-semibold mb-2">
+            <PlusCircleIcon className="text-green-500" width={20} /> Add an Item
+          </legend>
+          <div className="flex flex-col w-full items-end justify-center">
+            <label htmlFor="itemNumber">
+              Item #:
+              <input
+                className="px-2 py-1 border ml-2 rounded-sm"
+                type="text"
+                placeholder="00000"
+                {...register("itemNumber", {})}
+              />
+            </label>
+            {/* <span className=" text-red-600">text for error here</span> */}
+            {errors.itemNumber ? (
+              <span className="text-red-600">{errors.itemNumber.message}</span>
+            ) : null}
+          </div>
+         
+          <div className="flex flex-col w-full items-end justify-start">
+            <label htmlFor="description" className="flex">
+              Description:
+              <textarea
+                className="px-2 py-1 border ml-2 rounded-sm h-24 w-44"
+                placeholder="Item description..."
+                {...register("description", {})}
+              />
+            </label>
+            {errors.description ? (
+              <span className="text-right text-red-600">{errors.description.message}</span>
+            ) : null}
+          </div>
 
-      <label htmlFor="itemNumber">
-        Item #:
-        <input type="text" placeholder="00000" {...register("itemNumber", {})} />
-      </label>
-      {errors.itemNumber ? <div className="text-red-600">{errors.itemNumber.message}</div> : null}
-
-      <label htmlFor="description">
-        Description:
-        <input type="text" placeholder="description" {...register("description", {})} />
-      </label>
-      {errors.description ? <div className="text-red-600">{errors.description.message}</div> : null}
-
-      <button type="submit">Create Item</button>
-    </form>
+          <button
+            className="m-auto w-3/4 flex items-center justify-center bg-green-500 px-5 py-2 text-white rounded-xl hover:brightness-90"
+            type="submit"
+          >
+            Create Item
+          </button>
+        </fieldset>
+      </form>
+    </div>
   );
 }
