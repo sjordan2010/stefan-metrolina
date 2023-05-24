@@ -64,6 +64,7 @@ export default function DeleteModal({ item, setShowDelete }: DeleteModalProps) {
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
               Are you sure you want to delete Item #: {item.itemNumber}?
             </h3>
+            <p className="italic text-white mb-4">{item.itemDesc}</p>
             <button
               // data-modal-hide="popup-modal"
               onClick={(e) => handleDelete(item)}
