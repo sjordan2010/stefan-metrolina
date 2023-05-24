@@ -7,6 +7,8 @@ import {
 } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { Tooltip } from "react-tooltip";
+import EditModal from "./EditModal";
+import DeleteModal from "./DeleteModal";
 
 interface ItemProps {
   item: ItemType;
@@ -23,12 +25,25 @@ export type ItemType = {
 
 export default function Item({ item }: ItemProps) {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [showDelete, setShowDelete] = useState<boolean>(false);
+  const [showEdit, setShowEdit] = useState<boolean>(false);
 
   const handleExpand = () => {
     setIsExpanded((prev) => !prev);
   };
+
+  const handleDelete = () => {
+    setShowDelete(true);
+
+  };
+  const handleEdit = () => {
+    setShowEdit(true);
+
+  };
+
   return (
-    <div className="item-shadow flex flex-col w-full bg-white transition duration-100 hover:scale-105 hover:cursor-pointer">
+    <>
+    <div className="item-shadow flex flex-col w-full bg-white transition duration-100 hover:bg-gray-100 hover:cursor-pointer">
       <div
         className={`w-full h-fit min-h-24 border ${
           !isExpanded ? "rounded-b-md" : ""
@@ -37,14 +52,14 @@ export default function Item({ item }: ItemProps) {
         <div className="h-full">
           <div className="h-full flex flex-col justify-around">
             <XCircleIcon
-              //   onClick={handleDelete}
-              className="text-red-500 transition duration-150 hover:scale-110 hover:text-red-600 hover:cursor-pointer"
+                onClick={handleDelete}
+              className="text-red-600 transition duration-150 hover:scale-110 hover:brightness-95 hover:cursor-pointer"
               width={30}
               data-tooltip-id="deleteItem"
               data-tooltip-content="Delete this item"
             />
             <PencilSquareIcon
-              //   onClick={handleEdit}
+                onClick={handleEdit}
               className="text-yellow-500 transition duration-150 hover:scale-110 hover:brightness-90 hover:cursor-pointer"
               width={30}
               data-tooltip-id="editItem"
@@ -97,7 +112,11 @@ export default function Item({ item }: ItemProps) {
             );
           })}
       </div>
+      
       <Tooltip id="deleteItem" variant="error" />
     </div>
+      {showDelete && <DeleteModal item={item} setShowDelete={setShowDelete} />}
+      {showEdit && <EditModal item={item} setShowEdit={setShowEdit} />}
+      </>
   );
 }
