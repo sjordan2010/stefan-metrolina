@@ -67,10 +67,7 @@ export default function EditModal({ item, setShowEdit, setEditToast, scroll }: E
   );
 
   const onSubmit = (data: any) => {
-    console.log("values", data);
-
     data.itemKey = item.itemKey;
-    // handleEdit HERE
     editItemMutation.mutate(data);
     reset();
     setShowEdit(false);
