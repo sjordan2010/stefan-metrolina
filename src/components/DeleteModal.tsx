@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import { ItemType } from "./Item";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface DeleteModalProps {
   item: ItemType;
@@ -7,16 +8,63 @@ interface DeleteModalProps {
 }
 
 export default function DeleteModal({ item, setShowDelete }: DeleteModalProps) {
+  // const deleteItemMutation = useMutation((item: number) =>
+  //   fetch('/api/deleteProxy', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       url: 'https://m3.metrolinagreenhouses.com/api/Test/DeleteItem?itemKey=' + item,
+  //       headers: {
+  //         'apiKey': '736f64a0fe6b4e0eacf7a0b4144d39bb',
+  //       },
+  //     }),
+  //   })
+  //     .then((res) => res.json())
+
+  //     .catch(error => console.log('Create Mutation Error: ', error))
+  // );
+
+  const queryClient = useQueryClient();
+
+  // const handleDelete = (item: ItemType) => {
+  //   const { itemKey, itemNumber, itemDesc, upc, sku, locations } = item;
+  //   deleteItemMutation.mutate(itemKey, {
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries(['getItems']);
+  //     },
+  //   });
+  //   setShowDelete(false)
+  // }
+  const deleteItemMutation = useMutation(
+    (itemKey: number) =>
+      fetch("/api/deleteProxy", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          url: `https://m3.metrolinagreenhouses.com/api/Test/DeleteItem?itemKey=${itemKey}`,
+          headers: {
+            apiKey: "736f64a0fe6b4e0eacf7a0b4144d39bb",
+          },
+        }),
+      }).then((res) => res.json()),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["getItems"]);
+      },
+    }
+  );
 
   const handleDelete = (item: ItemType) => {
-    const { itemNumber, itemDesc, upc, sku, locations } = item;
-    // deleteItem()
-    setShowDelete(false)
-  }
-  
-  return (
-    
+    const { itemKey } = item;
+    deleteItemMutation.mutate(itemKey);
+    setShowDelete(false);
+  };
 
+  return (
     <div
       id="popup-modal"
       tabIndex={-1}
@@ -28,7 +76,6 @@ export default function DeleteModal({ item, setShowDelete }: DeleteModalProps) {
             onClick={() => setShowDelete(false)}
             type="button"
             className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-            // data-modal-hide="popup-modal"
           >
             <svg
               aria-hidden="true"
@@ -38,9 +85,9 @@ export default function DeleteModal({ item, setShowDelete }: DeleteModalProps) {
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clip-rule="evenodd"
+                clipRule="evenodd"
               ></path>
             </svg>
             <span className="sr-only">Close modal</span>
@@ -55,8 +102,8 @@ export default function DeleteModal({ item, setShowDelete }: DeleteModalProps) {
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 strokeWidth="2"
                 d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               ></path>
@@ -66,7 +113,6 @@ export default function DeleteModal({ item, setShowDelete }: DeleteModalProps) {
             </h3>
             <p className="italic text-white mb-4">{item.itemDesc}</p>
             <button
-              // data-modal-hide="popup-modal"
               onClick={(e) => handleDelete(item)}
               type="button"
               className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
@@ -75,7 +121,6 @@ export default function DeleteModal({ item, setShowDelete }: DeleteModalProps) {
             </button>
             <button
               onClick={() => setShowDelete(false)}
-              data-modal-hide="popup-modal"
               type="button"
               className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
             >
@@ -85,6 +130,5 @@ export default function DeleteModal({ item, setShowDelete }: DeleteModalProps) {
         </div>
       </div>
     </div>
-    // </>
   );
 }
