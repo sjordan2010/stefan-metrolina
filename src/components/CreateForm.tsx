@@ -4,12 +4,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 
-export default function CreateForm() {
+interface CreateFormProps {
+  setFullSidebar: any;
+  scroll: () => void;
+ }
+
+export default function CreateForm({ setFullSidebar, scroll }: CreateFormProps) {
   const CreateSchema = Yup.object().shape({
     itemNumber: Yup.string()
-      .matches(/^[0-9]+$/, "Must be only numbers")
-      .min(5, "Item number must be five characters")
-      .max(5, "Item number must be five characters")
+      .matches(/^[0-9]+$/, "Item # must only contain digits 0-9")
+      .min(5, "Item # must be a 5 digit number")
+      .max(5, "Item # must be a 5 digit number")
       .required("Required"),
     description: Yup.string()
       .min(3, "Item description must be at least 3 characters long")
@@ -28,9 +33,11 @@ export default function CreateForm() {
     resolver: yupResolver(CreateSchema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     console.log("values", data);
     reset();
+    setFullSidebar(false)
+    scroll()
   };
 
   type CreateItem = {
@@ -51,7 +58,7 @@ export default function CreateForm() {
             <label htmlFor="itemNumber">
               Item #:
               <input
-                className="px-2 py-1 border ml-2 rounded-sm"
+                className="px-2 py-1 border ml-2 rounded-sm w-32 lg:w-44"
                 type="text"
                 placeholder="00000"
                 {...register("itemNumber", {})}
@@ -67,7 +74,7 @@ export default function CreateForm() {
             <label htmlFor="description" className="flex">
               Description:
               <textarea
-                className="px-2 py-1 border ml-2 rounded-sm h-24 w-44"
+                className="px-2 py-1 border ml-2 rounded-sm h-24 w-full"
                 placeholder="Item description..."
                 {...register("description", {})}
               />

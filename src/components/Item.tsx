@@ -52,7 +52,7 @@ export default function Item({ item }: ItemProps) {
             />
           </div>
         </div>
-        <div onClick={handleExpand} className="flex flex-col gap-2 md:gap-4 lg:gap-10 lg:px-10 md:flex-row w-full items-end justify-around md:justify-between"   data-tooltip-id="expandItem"
+        <div onClick={handleExpand} className="flex flex-col gap-2 md:gap-4 lg:gap-10 lg:pl-6 md:flex-row w-full items-end justify-around md:justify-between"   data-tooltip-id="expandItem"
               data-tooltip-content="Expand to see locations">
           <div className="flex flex-col justify-around gap-2 w-full md:min-w-28 md:ml-2 text-center md:text-left">
             <p>

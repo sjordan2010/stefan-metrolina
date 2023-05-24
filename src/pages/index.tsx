@@ -1,8 +1,8 @@
-import Header from "@/components/Header";
 import ItemContainer from "@/components/ItemContainer";
 import Sidebar from "@/components/Sidebar";
 import { Inter } from "next/font/google";
-import { Children } from "react";
+import Head from "next/head";
+import { useRef } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -111,13 +111,27 @@ const items = [
 ];
 
 export default function Home() {
+  const endRef = useRef(null);
+
+  const scrollToBottom = () => {
+    if (endRef.current) {
+      endRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <main className={`flex flex-col min-h-screen ${inter.className}`}>
-      {/* <Header /> */}
-      <div className="flex">
-        <Sidebar/>
-        <ItemContainer items={items} />
-      </div>
-    </main>
+    <>
+      <Head>
+        <title>Stefan Jordan - Metrolina Greenhouses</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <main className={`flex flex-col min-h-screen ${inter.className}`}>
+        <div className="flex">
+          <Sidebar scroll={scrollToBottom} />
+          <ItemContainer items={items} />
+        </div>
+        <div ref={endRef}></div>
+      </main>
+    </>
   );
 }

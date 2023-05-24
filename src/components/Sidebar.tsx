@@ -1,11 +1,15 @@
 import Image from "next/image";
 import CreateForm from "./CreateForm";
 import Link from "next/link";
-import { PlusCircleIcon, ChevronLeftIcon } from "@heroicons/react/20/solid";
+import { PlusCircleIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { Tooltip } from "react-tooltip";
 import { useState } from "react";
 
-export default function Sidebar() {
+interface SidebarProps {
+  scroll: () => void;
+}
+
+export default function Sidebar({ scroll }: SidebarProps) {
   const [fullSidebar, setFullSidebar] = useState<boolean>(false);
 
   const handleSidebar = () => {
@@ -13,8 +17,10 @@ export default function Sidebar() {
   };
 
   return (
-    <>
-      <aside className="fixed -left-96 md:left-0 bg-gray-200 item-shadow px-8 h-screen w-96 md:z-50">
+    <div className={`fixed ${fullSidebar ? "left-0 z-50 navOpen" : "navClosed"} h-screen`}>
+      <aside
+        className={`fixed bg-gray-200 item-shadow -left-80 md:left-0 px-8 h-screen w-80 lg:w-96 md:z-50`}
+      >
         <Image
           className="mb-16"
           alt="Metrolina Greenhouses logo"
@@ -22,10 +28,11 @@ export default function Sidebar() {
           width={300}
           height={50}
         />
-        <CreateForm />
-        {fullSidebar && <ChevronLeftIcon className="absolute" width={250} />}
+        <CreateForm setFullSidebar={setFullSidebar} scroll={scroll} />
       </aside>
-      <aside className="fixed bg-gray-200 h-screen w-16 item-shadow pt-5 flex flex-col items-center gap-10">
+      <aside
+        className={`fixed bg-gray-200 item-shadow h-screen w-16 pt-5 flex flex-col items-center gap-1`}
+      >
         <Link
           className="transition duration-100 hover:scale-110"
           href="https://www.metrolinagreenhouses.com"
@@ -45,8 +52,19 @@ export default function Sidebar() {
           data-tooltip-id="addItem"
           data-tooltip-content="Add an item"
         />
+        {fullSidebar ? (
+          <ChevronLeftIcon
+            onClick={() => setFullSidebar(false)}
+            className="text-gray-600"
+            width={80}
+          />
+        ) : <ChevronRightIcon
+        onClick={() => setFullSidebar(true)}
+        className="text-gray-600"
+        width={80}
+      />}
       </aside>
       <Tooltip id="addItem" variant="success" place="right" />
-    </>
+    </div>
   );
 }
