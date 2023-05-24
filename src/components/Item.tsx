@@ -5,13 +5,16 @@ import {
   PencilSquareIcon,
   MapPinIcon,
 } from "@heroicons/react/20/solid";
-import { useState } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import { Tooltip } from "react-tooltip";
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
 
 interface ItemProps {
   item: ItemType;
+  setDeleteToast: Dispatch<SetStateAction<boolean>>;
+  setEditToast: Dispatch<SetStateAction<boolean>>;
+  scroll: () => void;
 }
 
 export type ItemType = {
@@ -23,9 +26,9 @@ export type ItemType = {
   locations: { locationId: string; onHandQty: number }[];
 };
 
-export default function Item({ item }: ItemProps) {
+export default function Item({ item, setDeleteToast, setEditToast, scroll }: ItemProps) {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const [showDelete, setShowDelete] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showEdit, setShowEdit] = useState<boolean>(false);
 
   const handleExpand = () => {
@@ -33,7 +36,7 @@ export default function Item({ item }: ItemProps) {
   };
 
   const handleDelete = () => {
-    setShowDelete(true);
+    setShowDeleteModal(true);
   };
   const handleEdit = () => {
     setShowEdit(true);
@@ -41,7 +44,7 @@ export default function Item({ item }: ItemProps) {
 
   return (
     <>
-      <div className="item-shadow flex flex-col w-full bg-white transition duration-100 hover:bg-gray-100 hover:cursor-pointer">
+      <div className="item-shadow flex flex-col w-full bg-white rounded-md transition duration-100 hover:bg-gray-100 hover:cursor-pointer">
         <div
           className={`w-full h-fit min-h-24 border ${
             !isExpanded ? "rounded-b-md" : ""
@@ -96,9 +99,7 @@ export default function Item({ item }: ItemProps) {
               {!isExpanded ? <ChevronDownIcon width={25} /> : <ChevronUpIcon width={25} />}
             </div>
           </div>
-          {/* <Tooltip id="expandLocation" variant="info" place="left" /> */}
           <Tooltip id="editItem" variant="warning" />
-          {/* <Tooltip id="expandItem" variant="dark" /> */}
         </div>
         <div
           className={`${
@@ -126,8 +127,12 @@ export default function Item({ item }: ItemProps) {
 
         <Tooltip id="deleteItem" variant="error" />
       </div>
-      {showDelete && <DeleteModal item={item} setShowDelete={setShowDelete} />}
-      {showEdit && <EditModal item={item} setShowEdit={setShowEdit} />}
+      {showDeleteModal && (
+        <DeleteModal item={item} setShowDeleteModal={setShowDeleteModal} setDeleteToast={setDeleteToast} />
+      )}
+      {showEdit && <EditModal item={item} setShowEdit={setShowEdit} setEditToast={setEditToast} scroll={scroll} />}
     </>
   );
 }
+
+

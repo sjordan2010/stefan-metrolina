@@ -4,39 +4,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface DeleteModalProps {
   item: ItemType;
-  setShowDelete: Dispatch<SetStateAction<boolean>>;
+  setShowDeleteModal: Dispatch<SetStateAction<boolean>>;
+  setDeleteToast: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function DeleteModal({ item, setShowDelete }: DeleteModalProps) {
-  // const deleteItemMutation = useMutation((item: number) =>
-  //   fetch('/api/deleteProxy', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       url: 'https://m3.metrolinagreenhouses.com/api/Test/DeleteItem?itemKey=' + item,
-  //       headers: {
-  //         'apiKey': '736f64a0fe6b4e0eacf7a0b4144d39bb',
-  //       },
-  //     }),
-  //   })
-  //     .then((res) => res.json())
-
-  //     .catch(error => console.log('Create Mutation Error: ', error))
-  // );
-
+export default function DeleteModal({ item, setShowDeleteModal, setDeleteToast }: DeleteModalProps) {
   const queryClient = useQueryClient();
 
-  // const handleDelete = (item: ItemType) => {
-  //   const { itemKey, itemNumber, itemDesc, upc, sku, locations } = item;
-  //   deleteItemMutation.mutate(itemKey, {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries(['getItems']);
-  //     },
-  //   });
-  //   setShowDelete(false)
-  // }
   const deleteItemMutation = useMutation(
     (itemKey: number) =>
       fetch("/api/deleteProxy", {
@@ -61,10 +35,12 @@ export default function DeleteModal({ item, setShowDelete }: DeleteModalProps) {
   const handleDelete = (item: ItemType) => {
     const { itemKey } = item;
     deleteItemMutation.mutate(itemKey);
-    setShowDelete(false);
+    setDeleteToast(true);
+    setShowDeleteModal(false);
   };
 
   return (
+    <>
     <div
       id="popup-modal"
       tabIndex={-1}
@@ -73,9 +49,9 @@ export default function DeleteModal({ item, setShowDelete }: DeleteModalProps) {
       <div className="relative w-full max-w-md max-h-full m-auto top-24">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
           <button
-            onClick={() => setShowDelete(false)}
+            onClick={() => setShowDeleteModal(false)}
             type="button"
-            className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+            className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
           >
             <svg
               aria-hidden="true"
@@ -95,7 +71,7 @@ export default function DeleteModal({ item, setShowDelete }: DeleteModalProps) {
           <div className="p-6 text-center">
             <svg
               aria-hidden="true"
-              className="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200"
+              className="mx-auto mb-4 text-gray-400 w-14 h-14"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -108,21 +84,21 @@ export default function DeleteModal({ item, setShowDelete }: DeleteModalProps) {
                 d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               ></path>
             </svg>
-            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+            <h3 className="mb-5 text-lg font-normal text-gray-300">
               Are you sure you want to delete Item #: {item.itemNumber}?
             </h3>
             <p className="italic text-white mb-4">{item.itemDesc}</p>
             <button
               onClick={(e) => handleDelete(item)}
               type="button"
-              className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+              className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
             >
               Yes, I am sure
             </button>
             <button
-              onClick={() => setShowDelete(false)}
+              onClick={() => setShowDeleteModal(false)}
               type="button"
-              className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+              className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
             >
               No, cancel
             </button>
@@ -130,5 +106,7 @@ export default function DeleteModal({ item, setShowDelete }: DeleteModalProps) {
         </div>
       </div>
     </div>
+
+    </>
   );
 }

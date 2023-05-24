@@ -22,11 +22,11 @@ export default function Sidebar({ scroll }: SidebarProps) {
         className={`fixed bg-gray-200 item-shadow -left-80 md:left-0 px-8 h-screen w-80 lg:w-96 md:z-50`}
       >
         <Image
-          className="mb-16"
+          className="mb-16 w-auto h-auto"
           alt="Metrolina Greenhouses logo"
           src="MetrolinaGreenhouses_logo.svg"
           width={300}
-          height={50}
+          height={300}
         />
         <CreateForm setFullSidebar={setFullSidebar} scroll={scroll} />
       </aside>
@@ -43,6 +43,7 @@ export default function Sidebar({ scroll }: SidebarProps) {
             src="/MG_small_logo.png"
             width={50}
             height={100}
+            className="w-auto h-auto"
           />
         </Link>
         <PlusCircleIcon

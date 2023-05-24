@@ -19,4 +19,7 @@
 - HeroIcon
 
 ## Notes:
+- I hate CORS
+- Created proxy api's to submit all fetch requests to metrolina API to bypass CORS 
+- EditItem changes the itemKey on it's own
 - 
