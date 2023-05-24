@@ -21,17 +21,23 @@ export default function Sidebar({ scroll }: SidebarProps) {
       <aside
         className={`fixed bg-gray-200 item-shadow -left-80 md:left-0 px-8 h-screen w-80 lg:w-96 md:z-50`}
       >
-        <Image
-          className="mb-16 w-auto h-auto"
-          alt="Metrolina Greenhouses logo"
-          src="MetrolinaGreenhouses_logo.svg"
-          width={300}
-          height={300}
-        />
+        <Link
+          className="transition duration-100 hover:scale-110"
+          href="https://www.metrolinagreenhouses.com"
+          target="_blank"
+        >
+          <Image
+            className="mb-16 w-auto h-auto"
+            alt="Metrolina Greenhouses logo"
+            src="MetrolinaGreenhouses_logo.svg"
+            width={300}
+            height={300}
+          />
+        </Link>
         <CreateForm setFullSidebar={setFullSidebar} scroll={scroll} />
       </aside>
       <aside
-        className={`fixed bg-gray-200 item-shadow h-screen w-16 pt-5 flex flex-col items-center gap-1`}
+        className={`fixed bg-gray-200 item-shadow h-screen w-16 pt-5 flex flex-col items-center gap-5`}
       >
         <Link
           className="transition duration-100 hover:scale-110"
@@ -41,8 +47,8 @@ export default function Sidebar({ scroll }: SidebarProps) {
           <Image
             alt="Metrolina Greenhouses logo"
             src="/MG_small_logo.png"
-            width={50}
-            height={100}
+            width={40}
+            height={50}
             className="w-auto h-auto"
           />
         </Link>
@@ -63,7 +69,7 @@ export default function Sidebar({ scroll }: SidebarProps) {
           <ChevronRightIcon
             onClick={() => setFullSidebar(true)}
             className="text-gray-600"
-            width={80}
+            width={50}
           />
         )}
       </aside>
