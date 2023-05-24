@@ -29,7 +29,7 @@ export default function CreateForm() {
   });
 
   const onSubmit = (data) => {
-    console.log("values", { data });
+    console.log("values", data);
     reset();
   };
 
@@ -41,7 +41,7 @@ export default function CreateForm() {
 //   console.log("Form Errors on line 41 - CreateForm.tsx: ", errors);
 
   return (
-    <div className="w-full flex border-2 rounded-sm shadow-lg p-6">
+    <div className="w-full flex border-2 rounded-sm item-shadow p-6 bg-white">
       <form className="flex flex-col gap-4 text-sm w-full" onSubmit={handleSubmit(onSubmit)}>
         <fieldset className="flex flex-col gap-4">
           <legend className="flex items-center text-lg font-semibold mb-2">
@@ -78,7 +78,7 @@ export default function CreateForm() {
           </div>
 
           <button
-            className="m-auto w-3/4 flex items-center justify-center bg-green-500 px-5 py-2 text-white rounded-xl hover:brightness-90"
+            className="m-auto w-3/4 flex items-center justify-center bg-green-500 px-5 py-2 text-white rounded-md item-shadow hover:brightness-90"
             type="submit"
           >
             Create Item

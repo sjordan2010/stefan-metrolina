@@ -113,9 +113,9 @@ const items = [
 export default function Home() {
   return (
     <main className={`flex flex-col min-h-screen ${inter.className}`}>
-      <Header />
+      {/* <Header /> */}
       <div className="flex">
-        <Sidebar>{Children}</Sidebar>
+        <Sidebar/>
         <ItemContainer items={items} />
       </div>
     </main>
