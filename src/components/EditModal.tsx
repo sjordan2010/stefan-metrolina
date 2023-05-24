@@ -1,5 +1,5 @@
 import { ItemType } from "./Item";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -13,7 +13,7 @@ interface EditModalProps {
 }
 
 export default function EditModal({ item, setShowEdit, setEditToast, scroll }: EditModalProps) {
- const EditSchema = Yup.object().shape({
+  const EditSchema = Yup.object().shape({
     itemNumber: Yup.string()
       .matches(/^[0-9]+$/, "Item # must only contain digits 0-9")
       .min(5, "Item # must be a 5 digit number")
@@ -54,7 +54,7 @@ export default function EditModal({ item, setShowEdit, setEditToast, scroll }: E
         body: JSON.stringify({
           url: `https://m3.metrolinagreenhouses.com/api/Test/EditItem`,
           headers: {
-            apiKey: "736f64a0fe6b4e0eacf7a0b4144d39bb",
+            apiKey: process.env.NEXT_PUBLIC_API_KEY,
           },
           body: data,
         }),
@@ -75,7 +75,7 @@ export default function EditModal({ item, setShowEdit, setEditToast, scroll }: E
     reset();
     setShowEdit(false);
     setEditToast(true);
-    scroll()
+    scroll();
   };
 
   return (

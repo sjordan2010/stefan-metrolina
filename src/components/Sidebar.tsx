@@ -59,11 +59,13 @@ export default function Sidebar({ scroll }: SidebarProps) {
             className="text-gray-600"
             width={80}
           />
-        ) : <ChevronRightIcon
-        onClick={() => setFullSidebar(true)}
-        className="text-gray-600"
-        width={80}
-      />}
+        ) : (
+          <ChevronRightIcon
+            onClick={() => setFullSidebar(true)}
+            className="text-gray-600"
+            width={80}
+          />
+        )}
       </aside>
       <Tooltip id="addItem" variant="success" place="right" />
     </div>

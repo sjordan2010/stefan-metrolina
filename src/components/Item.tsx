@@ -128,11 +128,20 @@ export default function Item({ item, setDeleteToast, setEditToast, scroll }: Ite
         <Tooltip id="deleteItem" variant="error" />
       </div>
       {showDeleteModal && (
-        <DeleteModal item={item} setShowDeleteModal={setShowDeleteModal} setDeleteToast={setDeleteToast} />
+        <DeleteModal
+          item={item}
+          setShowDeleteModal={setShowDeleteModal}
+          setDeleteToast={setDeleteToast}
+        />
       )}
-      {showEdit && <EditModal item={item} setShowEdit={setShowEdit} setEditToast={setEditToast} scroll={scroll} />}
+      {showEdit && (
+        <EditModal
+          item={item}
+          setShowEdit={setShowEdit}
+          setEditToast={setEditToast}
+          scroll={scroll}
+        />
+      )}
     </>
   );
 }
-
-

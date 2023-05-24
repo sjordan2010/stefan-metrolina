@@ -12,6 +12,7 @@
 - React
 - TypeScript
 - Tailwind
+- Flowbite
 - Tanstack Query
 - React-Hook-Form
 - Yup

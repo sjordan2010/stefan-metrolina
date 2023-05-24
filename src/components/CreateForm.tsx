@@ -4,7 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ItemType } from "./Item";
 import CreateToast from "./CreateToast";
 
 interface CreateFormProps {
@@ -36,9 +35,9 @@ export default function CreateForm({ setFullSidebar, scroll }: CreateFormProps) 
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        url: "https://m3.metrolinagreenhouses.com/api/Test/CreateItem?" + formData.params,
+        url: `https://m3.metrolinagreenhouses.com/api/Test/CreateItem?${formData.params}`,
         headers: {
-          apiKey: "736f64a0fe6b4e0eacf7a0b4144d39bb",
+          apiKey: process.env.NEXT_PUBLIC_API_KEY,
         },
       }),
     })
@@ -100,7 +99,6 @@ export default function CreateForm({ setFullSidebar, scroll }: CreateFormProps) 
                   {...register("itemNumber", {})}
                 />
               </label>
-              {/* <span className=" text-red-600">text for error here</span> */}
               {errors.itemNumber ? (
                 //@ts-ignore
                 <span className="text-red-600">{errors.itemNumber.message}</span>
@@ -136,5 +134,3 @@ export default function CreateForm({ setFullSidebar, scroll }: CreateFormProps) 
     </>
   );
 }
-
-
