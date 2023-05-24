@@ -18,120 +18,10 @@ const queryClient = new QueryClient();
 
 const inter = Inter({ subsets: ["latin"] });
 
-const items = [
-  {
-    itemNumber: "78414",
-    itemDesc: "Birdhouse Gazebo Small",
-    upc: "0759834560012",
-    sku: "1005909526",
-    locations: [
-      {
-        locationId: "HD0723",
-        onHandQty: 40,
-      },
-      {
-        locationId: "HD0732",
-        onHandQty: 35,
-      },
-    ],
-  },
-  {
-    itemNumber: "78414",
-    itemDesc: "Birdhouse Gazebo Small",
-    upc: "0759834560012",
-    sku: "1005909526",
-    locations: [
-      {
-        locationId: "HD0723",
-        onHandQty: 40,
-      },
-    ],
-  },
-  {
-    itemNumber: "78414",
-    itemDesc: "Birdhouse Gazebo Small Birdhouse Gazebo Small Birdhouse Gazebo Small",
-    upc: "0759834560012",
-    sku: "1005909526",
-    locations: [
-      {
-        locationId: "HD0723",
-        onHandQty: 40,
-      },
-    ],
-  },
-  {
-    itemNumber: "78414",
-    itemDesc: "Birdhouse Gazebo Small",
-    upc: "0759834560012",
-    sku: "1005909526",
-    locations: [
-      {
-        locationId: "HD0723",
-        onHandQty: 40,
-      },
-    ],
-  },
-  {
-    itemNumber: "78414",
-    itemDesc: "Birdhouse Gazebo Small",
-    upc: "0759834560012",
-    sku: "1005909526",
-    locations: [],
-  },
-  {
-    itemNumber: "78414",
-    itemDesc: "Birdhouse Gazebo Small",
-    upc: "0759834560012",
-    sku: "1005909526",
-    locations: [],
-  },
-  {
-    itemNumber: "78414",
-    itemDesc: "Birdhouse Gazebo Small",
-    upc: "0759834560012",
-    sku: "1005909526",
-    locations: [],
-  },
-  {
-    itemNumber: "78414",
-    itemDesc: "Birdhouse Gazebo Small",
-    upc: "0759834560012",
-    sku: "1005909526",
-    locations: [],
-  },
-  {
-    itemNumber: "78414",
-    itemDesc: "Birdhouse Gazebo Small",
-    upc: "0759834560012",
-    sku: "1005909526",
-    locations: [],
-  },
-  {
-    itemNumber: "78414",
-    itemDesc: "Birdhouse Gazebo Small",
-    upc: "0759834560012",
-    sku: "1005909526",
-    locations: [],
-  },
-  {
-    itemNumber: "78414",
-    itemDesc: "Birdhouse Gazebo Small",
-    upc: "0759834560012",
-    sku: "1005909526",
-    locations: [],
-  },
-];
+
 
 export default function Home() {
-  // const [allItems, setAllItems] = useState();
-  // const queryClient = useQueryClient()
 
-  // useEffect(() => {
-  //   const useEffectData = Promise.resolve(getItems2())
-  //   console.log('useEffectData', useEffectData)
-  // }, []);
-
-  // Queries
   const { isLoading, isError, data, error } = useQuery({ queryKey: ['getItems'], queryFn: () => getItems2() })
 
   const endRef = useRef(null);
@@ -161,25 +51,10 @@ export default function Home() {
       <main className={`flex flex-col min-h-screen ${inter.className}`}>
         <div className="flex">
           <Sidebar scroll={scrollToBottom} />
-          <ItemContainer items={data} />
+          <ItemContainer scroll={scrollToBottom} items={data} />
         </div>
         <div ref={endRef}></div>
       </main>
     </>
   );
 }
-
-// export async function getStaticProps() {
-//   const queryClient = new QueryClient();
-
-//   const allItems = await queryClient.prefetchQuery({
-//     queryKey: ["getItems"],
-//     queryFn: () => getItems(),
-//   });
-
-//   return {
-//     props: {
-//       dehydratedState: dehydrate(queryClient),
-//     },
-//   };
-// }

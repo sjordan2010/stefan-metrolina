@@ -3,20 +3,23 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface EditModalProps {
   item: ItemType;
   setShowEdit: Dispatch<SetStateAction<boolean>>;
+  setEditToast: Dispatch<SetStateAction<boolean>>;
+  scroll: () => void;
 }
 
-export default function EditModal({ item, setShowEdit }: EditModalProps) {
-  const EditSchema = Yup.object().shape({
+export default function EditModal({ item, setShowEdit, setEditToast, scroll }: EditModalProps) {
+ const EditSchema = Yup.object().shape({
     itemNumber: Yup.string()
       .matches(/^[0-9]+$/, "Item # must only contain digits 0-9")
       .min(5, "Item # must be a 5 digit number")
       .max(5, "Item # must be a 5 digit number")
       .required("Required"),
-    description: Yup.string()
+    itemDesc: Yup.string()
       .min(3, "Item description must be at least 3 characters long")
       .max(50, "Item description can only contain 50 characters")
       .required("Required"),
@@ -31,7 +34,7 @@ export default function EditModal({ item, setShowEdit }: EditModalProps) {
     reset,
   } = useForm({
     defaultValues: {
-      description: item.itemDesc,
+      itemDesc: item.itemDesc,
       itemNumber: item.itemNumber,
       sku: item.sku,
       upc: item.upc,
@@ -39,20 +42,44 @@ export default function EditModal({ item, setShowEdit }: EditModalProps) {
     resolver: yupResolver(EditSchema),
   });
 
+  const queryClient = useQueryClient();
+
+  const editItemMutation = useMutation(
+    (data: ItemType) =>
+      fetch("/api/editProxy", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          url: `https://m3.metrolinagreenhouses.com/api/Test/EditItem`,
+          headers: {
+            apiKey: "736f64a0fe6b4e0eacf7a0b4144d39bb",
+          },
+          body: data,
+        }),
+      }).then((res) => res.json()),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["getItems"]);
+      },
+    }
+  );
+
   const onSubmit = (data: any) => {
     console.log("values", data);
+
+    data.itemKey = item.itemKey;
     // handleEdit HERE
+    editItemMutation.mutate(data);
     reset();
     setShowEdit(false);
-  };
-
-  const handleEdit = (item: ItemType) => {
-    // EDIT FUNCTIONALITY HERE
-    console.log(item);
+    setEditToast(true);
+    scroll()
   };
 
   return (
-    <div
+    <section
       tabIndex={-1}
       aria-hidden="true"
       className="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full glass"
@@ -82,6 +109,7 @@ export default function EditModal({ item, setShowEdit }: EditModalProps) {
           <div className="px-6 py-6 lg:px-8">
             <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
               Edit Item #: {item.itemNumber}
+              {item.itemKey}
             </h3>
 
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
@@ -106,18 +134,18 @@ export default function EditModal({ item, setShowEdit }: EditModalProps) {
               </div>
               <div>
                 <label
-                  htmlFor="description"
+                  htmlFor="itemDesc"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Item Description:
                 </label>
                 <input
-                  {...register("description", {})}
+                  {...register("itemDesc", {})}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 "
                   required
                 />
-                {errors.description ? (
-                  <span className="text-right text-red-600">{errors.description.message}</span>
+                {errors.itemDesc ? (
+                  <span className="text-right text-red-600">{errors.itemDesc.message}</span>
                 ) : null}
               </div>
               <div>
@@ -169,6 +197,6 @@ export default function EditModal({ item, setShowEdit }: EditModalProps) {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
