@@ -12,6 +12,7 @@ import {
   QueryClientProvider,
   dehydrate,
 } from "@tanstack/react-query";
+import { ItemType } from "@/components/Item";
 
 const queryClient = new QueryClient();
 
@@ -148,6 +149,8 @@ export default function Home() {
   if (isError) {
     return <span>Error: {error.message}</span>
   }
+
+  data.sort((a, b) => a.itemKey - b.itemKey)
 
   return (
     <>

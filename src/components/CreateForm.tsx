@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface CreateFormProps {
   setFullSidebar: any;
@@ -16,13 +17,39 @@ export default function CreateForm({ setFullSidebar, scroll }: CreateFormProps) 
       .min(5, "Item # must be a 5 digit number")
       .max(5, "Item # must be a 5 digit number")
       .required("Required"),
-    description: Yup.string()
+    itemDesc: Yup.string()
       .min(3, "Item description must be at least 3 characters long")
       .max(50, "Item description can only contain 50 characters")
       .required("Required"),
     //   UPC: Yup.string().matches(/^[0-9]+$/, "UPC can only contain numbers"),
     //   SKU: Yup.string().matches(/^[0-9]+$/, "Must be only numbers"),
   });
+
+  const createItemMutation = useMutation((formData: CreateItem) => 
+  // {
+    // const params = new URLSearchParams();
+    // params.append('itemNumber', formData.itemNumber);
+    // params.append('itemDesc', formData.itemDesc);
+    fetch('/api/createProxy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        url: 'https://m3.metrolinagreenhouses.com/api/Test/CreateItem?' + formData.params,
+        headers: {
+          'apiKey': '736f64a0fe6b4e0eacf7a0b4144d39bb',
+        },
+      }),
+    })
+      .then((res) => res.json())
+  
+      .catch(error => console.log('Create Mutation Error: ', error))
+  // }
+  );
+  
+  const queryClient = useQueryClient();
+
 
   const {
     register,
@@ -34,15 +61,45 @@ export default function CreateForm({ setFullSidebar, scroll }: CreateFormProps) 
   });
 
   const onSubmit = (data: any) => {
+    const params = new URLSearchParams();
+    params.append('itemNumber', data.itemNumber);
+    params.append('itemDesc', data.itemDesc);
+    console.log('params', params.toString())
+    data.params = params.toString().replace(/\+/g, '%20')
     console.log("values", data);
+    createItemMutation.mutate(data, {
+      onSuccess: () => {
+        // Trigger a refetch of the item data after the mutation is successful
+        queryClient.invalidateQueries(['getItems']);
+      },
+    }); // Call the mutation with the form data
+    
     reset();
     setFullSidebar(false)
     scroll()
   };
 
+ 
+
+
+
+  // const onSubmit = (data: any) => {
+  //   const params = new URLSearchParams();
+  //   params.append('itemNumber', encodeURIComponent(data.itemNumber));
+  //   params.append('itemDesc', encodeURIComponent(data.itemDesc));
+  //   console.log('params', params.toString());
+  //   data.params = params.toString();
+  //   console.log("values", data);
+  //   createItemMutation.mutate(data); // Call the mutation with the form data
+  //   reset();
+  //   setFullSidebar(false);
+  //   scroll();
+  // };
+  
   type CreateItem = {
     itemNumber: string;
-    description: string;
+    itemDesc: string;
+    params?: string;
   };
 
 //   console.log("Form Errors on line 41 - CreateForm.tsx: ", errors);
@@ -71,16 +128,16 @@ export default function CreateForm({ setFullSidebar, scroll }: CreateFormProps) 
           </div>
          
           <div className="flex flex-col w-full items-end justify-start">
-            <label htmlFor="description" className="flex">
+            <label htmlFor="itemDesc" className="flex">
               Description:
               <textarea
                 className="px-2 py-1 border ml-2 rounded-sm h-24 w-full"
                 placeholder="Item description..."
-                {...register("description", {})}
+                {...register("itemDesc", {})}
               />
             </label>
-            {errors.description ? (
-              <span className="text-right text-red-600">{errors.description.message}</span>
+            {errors.itemDesc ? (
+              <span className="text-right text-red-600">{errors.itemDesc.message}</span>
             ) : null}
           </div>
 
