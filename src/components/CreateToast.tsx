@@ -1,11 +1,13 @@
+import type { Dispatch, SetStateAction } from "react";
+
 interface CreateToastProps {
-  setShowToast: any;
+  setShowToast: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function CreateToast({ setShowToast }: CreateToastProps) {
   return (
     <div
-      className="relative top-8 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-sm border item-shadow"
+      className="fixed top-6 right-6 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-sm border item-shadow"
       role="alert"
     >
       <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg">
