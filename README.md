@@ -4,7 +4,7 @@
 1. Clone this repository to your local machine
 2. Open your terminal and navigate to the root directory
 3. Run `npm i` to install all dependencies
-4. Create your own `.env.local` file and use your key: `NEXT_PUBLIC_API_KEY="###"`
+4. Create your own `.env.local` file and use your apiKey: `NEXT_PUBLIC_API_KEY="###"`
 5. Run `npm run build` to create a production version
 6. Run `npm start` and open your browser to http://localhost:3000 
 7. Or skip steps 5 & 6 and run `npm run dev` and open your browser to http://localhost:3000
