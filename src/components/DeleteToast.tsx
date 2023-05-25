@@ -8,7 +8,7 @@ export default function DeleteToast({ setDeleteToast }: DeleteToastProps) {
   return (
     <div
       id="toast-danger"
-      className="fixed top-6 right-6  flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white border rounded-sm item-shadow"
+      className="fixed top-6 right-6 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white border rounded-sm item-shadow z-50"
       role="alert"
     >
       <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg">

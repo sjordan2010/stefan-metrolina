@@ -30,7 +30,7 @@ export default function EditModal({ item, setShowEdit, setEditToast, scroll }: E
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
   } = useForm({
     defaultValues: {
@@ -82,11 +82,11 @@ export default function EditModal({ item, setShowEdit, setEditToast, scroll }: E
       className="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full glass"
     >
       <div className="relative w-full max-w-md max-h-full m-auto top-20">
-        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div className="relative rounded-lg shadow bg-gray-700">
           <button
             onClick={() => setShowEdit(false)}
             type="button"
-            className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+            className="absolute top-3 right-2.5 text-gray-300 bg-transparent hover:bg-gray-600 hover:text-white rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
           >
             <svg
               aria-hidden="true"
@@ -104,17 +104,14 @@ export default function EditModal({ item, setShowEdit, setEditToast, scroll }: E
             <span className="sr-only">Close modal</span>
           </button>
           <div className="px-6 py-6 lg:px-8">
-            <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+            <h3 className="mb-4 text-xl font-medium text-white">
               Edit Item #: {item.itemNumber}
               {item.itemKey}
             </h3>
 
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
               <div>
-                <label
-                  htmlFor="itemNumber"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
+                <label htmlFor="itemNumber" className="block mb-2 text-sm font-medium text-white">
                   Item #:
                 </label>
                 <input
@@ -130,13 +127,11 @@ export default function EditModal({ item, setShowEdit, setEditToast, scroll }: E
                 ) : null}
               </div>
               <div>
-                <label
-                  htmlFor="itemDesc"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
+                <label htmlFor="itemDesc" className="block mb-2 text-sm font-medium text-white">
                   Item Description:
                 </label>
                 <input
+                  placeholder="Item description..."
                   {...register("itemDesc", {})}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 "
                   required
@@ -146,13 +141,11 @@ export default function EditModal({ item, setShowEdit, setEditToast, scroll }: E
                 ) : null}
               </div>
               <div>
-                <label
-                  htmlFor="sku"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
+                <label htmlFor="sku" className="block mb-2 text-sm font-medium text-white">
                   SKU:
                 </label>
                 <input
+                  placeholder="SKU#"
                   {...register("sku", {})}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 "
                   required
@@ -162,10 +155,7 @@ export default function EditModal({ item, setShowEdit, setEditToast, scroll }: E
                 ) : null}
               </div>
               <div>
-                <label
-                  htmlFor="upc"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
+                <label htmlFor="upc" className="block mb-2 text-sm font-medium text-white">
                   UPC:
                 </label>
                 <input
@@ -184,8 +174,9 @@ export default function EditModal({ item, setShowEdit, setEditToast, scroll }: E
                   Cancel
                 </button>
                 <button
+                  disabled={!isValid}
                   type="submit"
-                  className="w-full text-white bg-green-700 hover:brightness-90 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+                  className="w-full text-white bg-green-700 hover:brightness-90 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:bg-gray-400"
                 >
                   Edit Item
                 </button>

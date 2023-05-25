@@ -1,26 +1,22 @@
 import Image from "next/image";
 import CreateForm from "./CreateForm";
 import Link from "next/link";
-import { PlusCircleIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import { PlusCircleIcon } from "@heroicons/react/20/solid";
 import { Tooltip } from "react-tooltip";
-import { useState } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
+import CreateModal from "./CreateModal";
 
 interface SidebarProps {
   scroll: () => void;
+  setShowCreateToast: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Sidebar({ scroll }: SidebarProps) {
-  const [fullSidebar, setFullSidebar] = useState<boolean>(false);
-
-  const handleSidebar = () => {
-    setFullSidebar(true);
-  };
+export default function Sidebar({ scroll, setShowCreateToast }: SidebarProps) {
+  const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
 
   return (
-    <div className={`fixed ${fullSidebar ? "left-0 z-50 navOpen" : "navClosed"} h-screen`}>
-      <aside
-        className={`fixed bg-gray-200 item-shadow -left-80 md:left-0 px-8 h-screen w-80 lg:w-96 md:z-50`}
-      >
+    <div className="fixed h-screen">
+      <aside className="fixed bg-gray-200 item-shadow -left-80 md:left-0 px-8 h-screen w-80 lg:w-96 md:z-50">
         <Link
           className="transition duration-100 hover:scale-110"
           href="https://www.metrolinagreenhouses.com"
@@ -34,18 +30,16 @@ export default function Sidebar({ scroll }: SidebarProps) {
             height={300}
           />
         </Link>
-        <CreateForm setFullSidebar={setFullSidebar} scroll={scroll} />
+        <CreateForm scroll={scroll} setShowCreateToast={setShowCreateToast} />
       </aside>
-      <aside
-        className={`fixed bg-gray-200 item-shadow h-screen w-16 pt-5 flex flex-col items-center gap-5`}
-      >
+      <aside className="fixed bg-gray-200 item-shadow h-screen w-16 pt-5 flex flex-col items-center gap-5">
         <Link
           className="transition duration-100 hover:scale-110"
           href="https://www.metrolinagreenhouses.com"
           target="_blank"
         >
           <Image
-            alt="Metrolina Greenhouses logo"
+            alt="Metrolina Greenhouses"
             src="/MG_small_logo.png"
             width={40}
             height={50}
@@ -53,23 +47,17 @@ export default function Sidebar({ scroll }: SidebarProps) {
           />
         </Link>
         <PlusCircleIcon
-          onClick={handleSidebar}
+          onClick={() => setShowCreateModal(true)}
           width={50}
           className="text-green-600 hover:cursor-pointer transition duration-100 hover:scale-110"
           data-tooltip-id="addItem"
           data-tooltip-content="Add an item"
         />
-        {fullSidebar ? (
-          <ChevronLeftIcon
-            onClick={() => setFullSidebar(false)}
-            className="text-gray-600"
-            width={80}
-          />
-        ) : (
-          <ChevronRightIcon
-            onClick={() => setFullSidebar(true)}
-            className="text-gray-600"
-            width={50}
+        {showCreateModal && (
+          <CreateModal
+            scroll={scroll}
+            setShowCreateModal={setShowCreateModal}
+            setShowCreateToast={setShowCreateToast}
           />
         )}
       </aside>

@@ -2,10 +2,12 @@ import ItemContainer from "@/components/ItemContainer";
 import Sidebar from "@/components/Sidebar";
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import { useRef } from "react";
-import { getItems2 } from "../utils/getItems";
+import { useRef, useState } from "react";
+import { getItems } from "../utils/getItems";
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import { ItemType } from "@/components/Item";
+import CreateToast from "@/components/CreateToast";
+import Loading from "@/components/Loading";
 
 const queryClient = new QueryClient();
 
@@ -14,9 +16,9 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["getItems"],
-    queryFn: () => getItems2(),
+    queryFn: () => getItems(),
   });
-
+  const [showCreateToast, setShowCreateToast] = useState<boolean>(false);
   const endRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -26,7 +28,7 @@ export default function Home() {
   };
 
   if (isLoading) {
-    return <span>Loading...</span>;
+    return <Loading />;
   }
 
   if (isError) {
@@ -43,9 +45,10 @@ export default function Home() {
       </Head>
       <main className={`flex flex-col min-h-screen ${inter.className}`}>
         <div className="flex">
-          <Sidebar scroll={scrollToBottom} />
+          <Sidebar scroll={scrollToBottom} setShowCreateToast={setShowCreateToast} />
           <ItemContainer scroll={scrollToBottom} items={data} />
         </div>
+        {showCreateToast && <CreateToast setShowToast={setShowCreateToast} />}
         <div ref={endRef}></div>
       </main>
     </>

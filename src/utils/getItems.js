@@ -1,17 +1,4 @@
-export const getItems = async () => {
-  const res = await fetch("https://m3.metrolinagreenhouses.com/api/Test/GetItemList", {
-    method: "GET",
-    headers: {
-      apiKey: process.env.NEXT_PUBLIC_API_KEY,
-    },
-  });
-
-  const data = await res.json();
-
-  return data;
-};
-
-export const getItems2 = () => {
+export const getItems = () => {
   return new Promise((resolve, reject) => {
     fetch("/api/proxy", {
       method: "POST",

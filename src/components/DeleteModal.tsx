@@ -51,11 +51,11 @@ export default function DeleteModal({
         className="fixed top-0 left-0 right-0 z-50 p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full glass"
       >
         <div className="relative w-full max-w-md max-h-full m-auto top-24">
-          <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <div className="relative rounded-lg shadow bg-gray-700">
             <button
               onClick={() => setShowDeleteModal(false)}
               type="button"
-              className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+              className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-600 hover:text-white rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
             >
               <svg
                 aria-hidden="true"

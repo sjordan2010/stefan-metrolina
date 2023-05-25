@@ -68,13 +68,14 @@ export default function Item({ item, setDeleteToast, setEditToast, scroll }: Ite
               />
             </div>
           </div>
-          <div
+          <button
+            type="button"
             onClick={handleExpand}
             className="flex flex-col gap-2 md:gap-4 lg:gap-10 lg:pl-6 md:flex-row w-full items-end justify-around md:justify-between"
             data-tooltip-id="expandItem"
             data-tooltip-content="Expand to see locations"
           >
-            <div className="flex flex-col justify-around gap-2 w-full md:min-w-28 md:ml-2 text-center md:text-left">
+            <div className="flex flex-col justify-around gap-2 w-full h-full md:min-w-28 md:ml-2 text-center md:text-left">
               <p>
                 <span className="font-bold text-gray-500">ITEM #: </span>
                 {item.itemNumber}
@@ -95,10 +96,10 @@ export default function Item({ item, setDeleteToast, setEditToast, scroll }: Ite
                 <span className="font-bold text-gray-500">UPC: </span> {item.upc}
               </p>
             </div>
-            <div className="w-full md:w-fit min-h-fit md:h-full flex items-center justify-center transition duration-150 hover:animate-bounce">
+            <div className="w-full md:w-fit min-h-fit md:h-full flex items-center justify-center transition duration-150 hover:scale-125 hover:text-green-600">
               {!isExpanded ? <ChevronDownIcon width={25} /> : <ChevronUpIcon width={25} />}
             </div>
-          </div>
+          </button>
           <Tooltip id="editItem" variant="warning" />
         </div>
         <div
@@ -106,7 +107,7 @@ export default function Item({ item, setDeleteToast, setEditToast, scroll }: Ite
             !isExpanded ? "hidden" : ""
           } w-full h-fit px-2 py-2 bg-gray-200 rounded-b-sm text-xs divide-y-2 divide-gray-400`}
         >
-          {isExpanded &&
+          {isExpanded && item.locations.length > 0 ? (
             item.locations.map((location, index) => {
               return (
                 <div
@@ -122,7 +123,12 @@ export default function Item({ item, setDeleteToast, setEditToast, scroll }: Ite
                   </p>
                 </div>
               );
-            })}
+            })
+          ) : (
+            <div className="w-full flex items-center gap-4 lg:gap-10 py-2 mb-2 lg:text-base lg:px-10 italic">
+              No products available
+            </div>
+          )}
         </div>
 
         <Tooltip id="deleteItem" variant="error" />
